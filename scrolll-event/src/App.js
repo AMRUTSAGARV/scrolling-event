@@ -1,29 +1,41 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./App.css";
 
 const App = () => {
-  const apiurl = "https://dummyjson.com/products";
+  const [list, setList] = useState([]);
 
-  const [data, setdata] = useState([]);
-
-  const fetchData = () => {
-    return axios
-      .get(apiurl)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const loadMoreList = () => {
+    axios.get("https://dummyjson.com/products").then(({ data }) => {
+      const newList = [];
+      data.products.forEach((l) => newList.push(l.thumbnail));
+      setList(newList);
+    });
   };
 
   useEffect(() => {
-    fetchData();
+    loadMoreList();
   }, []);
 
-  return <div className="App">jj</div>;
-
-  return <div>App</div>;
+  return (
+    <div className="App">
+      <main>
+        {list.map((l, i) => {
+          return (
+            <div className="column">
+              <div className="row">
+                <img className="img" src={l} />
+              </div>
+              <div className="ide" key={i}>
+                {i + 1}
+              </div>
+              <div className="title">OnePlus 5T</div>
+            </div>
+          );
+        })}
+      </main>
+    </div>
+  );
 };
 
 export default App;

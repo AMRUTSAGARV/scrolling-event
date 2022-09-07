@@ -11,7 +11,7 @@ const App = () => {
       .get(`https://dummyjson.com/products?skip=5&limit=10&offset=${offset}`)
       .then(({ data }) => {
         const newList = [];
-        data.products.forEach((l) => newList.push(l.thumbnail));
+        data.products.map((x) => newList.push(x));
         // data.products.forEach((l) => newList.push(l.title));
         setList((oldList) => [...oldList, ...newList]);
       });
@@ -19,14 +19,10 @@ const App = () => {
   };
 
   const handleScroll = (e) => {
-    // console.log("top: ", e.target.documentElement.scrollTop);
-    // console.log("win: ", window.innerHeight);
-    // console.log("height: ", e.target.documentElement.scrollHeight);
     if (
       window.innerHeight + e.target.documentElement.scrollTop + 1 >=
       e.target.documentElement.scrollHeight
     ) {
-      // console.log("at the bottom of the page!");
       loadMoreList();
     }
   };
@@ -39,16 +35,14 @@ const App = () => {
   return (
     <div className="App">
       <main>
-        {list.map((l, i) => {
+        {list.map((x) => {
           return (
             <div className="column">
               <div className="row">
-                <img alt="" className="img" src={l} />
+                <img alt="" className="img" src={x.thumbnail} />
               </div>
-              <div className="ide" key={i}>
-                {i + 1}
-              </div>
-              <div></div>
+
+              <div className="title">{x.title}</div>
             </div>
           );
         })}
